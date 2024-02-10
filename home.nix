@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -18,8 +18,9 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-
+      pkgs.discord
       pkgs.kitty 
+      pkgs.lutris
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -38,6 +39,18 @@
      '')
   ];
 
+
+
+  # Enable certain unfree software                               
+    nixpkgs.config.allowUnfreePredicate = pkg:
+     builtins.elem (lib.getName pkg) [
+      # Add additional package names here
+      "discord"
+      "steam"
+      "steam-original"
+    ];
+
+
   # Hyprland
     wayland.windowManager.hyprland.enable = true;
  
@@ -45,7 +58,8 @@
 
     wayland.windowManager.hyprland.settings = {
  
-    
+    monitor = "DP-1, 3440x1440@144,0x0,1";
+   # monitor = "DP-2, 1280x960@90,3440x0,1";   
     
     input = { 
         kb_layout = "se";
@@ -136,3 +150,10 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }
+
+
+
+
+
+
+

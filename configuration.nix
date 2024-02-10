@@ -16,8 +16,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Enable Flakes
-    nix.settings.experimental-features = [ "nix-command" "flakes" ];
-    networking.hostName = "GurkLappen"; # Define your hostname. 
+    #nix.settings.experimental-features = [ "nix-command" "flakes" ];
+    networking.hostName = "GurkTornet"; # Define your hostname. 
     networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
@@ -70,59 +70,8 @@
      pciutils
    ];
 
-  # Enable unfree software 
-    
-    nixpkgs.config.allowUnfreePredicate = pkg:
-      builtins.elem (lib.getName pkg) [
-        # Add package names here
-        "nvidia-x11"
-        "nvidia-settings"
-        "nvidia-persistenced"
-      ];
- 
-  ############################# nvidia driver section ################################
-  # Enable OpenGL
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  
 
-  # Load nvidia driver for Wayland and Xorg
-    services.xserver.videoDrivers = ["nvidia"];
-
-
-  hardware.nvidia = {
-
-    # Modesetting
-    modesetting.enable = true;  
-
-    # nvidia Power management
-    powerManagement.enable = false;
-    # Fine grained power management. Turns off GPU when not in use.(Only Turing or newer).
-    powerManagement.finegrained = false;
-    # nvidia open source kernel, (not nouveau). Currently buggy
-    open = false;
-    # Enable the "nvidia-settings" menu
-    nvidiaSettings = true;
-
-    # Driver version
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-  };
-
-  # nvidia prime
-    
-    hardware.nvidia.prime = { 
-      offload = {
-          enable = true;
-          enableOffloadCmd = true;
-      };
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-    };
-
-#######################################################################################
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
